@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Facebook Clone - Demo Login</title>
+  <style>
+    :root{--blue:#1877f2;--bg:#f0f2f5;--card:#fff;--muted:#606770}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#050505}
+    
+    .hidden{display:none}
+
+    /* login page */
+    .login-page{display:flex;justify-content:center;align-items:center;height:100vh;background:var(--bg)}
+    .login-box{background:var(--card);padding:32px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1);width:300px}
+    .login-box h1{color:var(--blue);margin:0 0 16px;font-size:28px;text-align:center}
+    .login-box input{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:6px}
+    .login-box button{width:100%;padding:10px;background:var(--blue);border:none;border-radius:6px;color:#fff;font-weight:700;cursor:pointer;margin-top:10px}
+    .login-box .note{margin-top:10px;font-size:13px;color:var(--muted);text-align:center}
+
+    header{background:var(--card);display:flex;align-items:center;gap:16px;padding:10px 16px;position:sticky;top:0;z-index:10;border-bottom:1px solid #e6e6e6}
+    .logo{font-weight:700;color:var(--blue);font-size:20px}
+    .search{flex:1;max-width:560px}
+    .search input{width:100%;padding:8px 12px;border-radius:20px;border:1px solid #ddd;background:#f5f6f7}
+    .icons{display:flex;gap:10px}
+    .icon{padding:8px 12px;border-radius:8px;background:#f5f6f7;cursor:pointer}
+
+    .container{max-width:1100px;margin:18px auto;display:grid;grid-template-columns:240px 1fr 300px;gap:18px;padding:0 12px}
+    @media (max-width:980px){.container{grid-template-columns:1fr;max-width:640px}}
+
+    .card{background:var(--card);border-radius:10px;padding:12px;border:1px solid #e6e6e6}
+
+    .profile{display:flex;align-items:center;gap:10px}
+    .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#89f7fe 0%, #66a6ff 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .left .menu{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .menu button{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;border:none;background:#f5f6f7;cursor:pointer}
+
+    .composer{display:flex;gap:12px;align-items:flex-start}
+    .composer textarea{flex:1;border-radius:10px;border:1px solid #e6e6e6;padding:10px;min-height:60px;resize:none}
+    .composer .post-actions{display:flex;gap:8px;margin-top:8px}
+    .btn{background:var(--blue);color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+
+    .post{margin-top:12px}
+    .post-header{display:flex;gap:10px;align-items:center}
+    .post-image{width:100%;max-height:420px;object-fit:cover;border-radius:8px;margin-top:8px}
+    .post-footer{display:flex;gap:16px;margin-top:8px;color:var(--muted);font-size:14px}
+    .action{cursor:pointer;padding:8px;border-radius:8px}
+
+    .comments{margin-top:8px}
+    .comment{display:flex;gap:8px;margin-top:6px}
+    .comment .small-avatar{width:30px;height:30px;border-radius:50%;background:#ddd;display:inline-block}
+    .comment .bubble{background:#f0f2f5;padding:8px;border-radius:12px}
+
+    .suggest{display:flex;flex-direction:column;gap:8px}
+    .suggest .user{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-radius:8px;background:#f5f6f7}
+
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <!-- Login Page -->
+  <div class="login-page" id="loginPage">
+    <div class="login-box">
+      <h1>FaceMini</h1>
+      <input type="text" id="username" placeholder="Email or Phone" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button id="loginBtn">Log In</button>
+      <div class="note">Demo login: just click Log In</div>
+    </div>
+  </div>
+
+  <!-- Home Page -->
+  <div id="homePage" class="hidden">
+    <header>
+      <div class="logo">FaceMini</div>
+      <div class="search"><input placeholder="Search FaceMini" id="searchInput"></div>
+      <div class="icons">
+        <div class="icon">🏠</div>
+        <div class="icon">💬</div>
+        <div class="icon">🔔</div>
+        <div class="icon">⬤</div>
+      </div>
+    </header>
+
+    <main class="container">
+      <aside class="left">
+        <div class="card">
+          <div class="profile">
+            <div class="avatar">NG</div>
+            <div>
+              <div style="font-weight:700" id="profileName">User</div>
+              <div class="muted" style="font-size:13px">Karur, Tamil Nadu</div>
+            </div>
+          </div>
+          <div class="menu">
+            <button>🏠 News Feed</button>
+            <button>👥 Friends</button>
+            <button>📷 Photos</button>
+            <button>⚙️ Settings</button>
+          </div>
+        </div>
+      </aside>
+
+      <section>
+        <div class="card">
+          <div class="composer">
+            <div class="avatar">NG</div>
+            <div style="flex:1">
+              <textarea id="postText" placeholder="What's on your mind?"></textarea>
+              <div class="post-actions">
+                <input type="file" id="postImageInput" accept="image/*">
+                <button class="btn" id="createPostBtn">Post</button>
+              </div>
+              <div id="imagePreview" style="margin-top:8px"></div>
+            </div>
+          </div>
+        </div>
+        <div id="feed"></div>
+      </section>
+
+      <aside>
+        <div class="card">
+          <div style="font-weight:700">People you may know</div>
+          <div class="suggest" style="margin-top:8px">
+            <div class="user"><div><strong>Priya</strong><div class="muted">Chennai</div></div><button>Connect</button></div>
+            <div class="user"><div><strong>Ravi</strong><div class="muted">Bangalore</div></div><button>Connect</button></div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn')
+    const loginPage = document.getElementById('loginPage')
+    const homePage = document.getElementById('homePage')
+    const profileName = document.getElementById('profileName')
+
+    loginBtn.addEventListener('click', ()=>{
+      const username = document.getElementById('username').value.trim() || 'Demo User'
+      loginPage.classList.add('hidden')
+      homePage.classList.remove('hidden')
+      profileName.textContent = username
+    })
+
+    // Post feed logic
+    const feedEl = document.getElementById('feed')
+    const createBtn = document.getElementById('createPostBtn')
+    const postText = document.getElementById('postText')
+    const postImageInput = document.getElementById('postImageInput')
+    const imagePreview = document.getElementById('imagePreview')
+    let posts = []
+
+    function renderFeed(){
+      feedEl.innerHTML = ''
+      posts.forEach((p, idx)=>{
+        const div = document.createElement('div')
+        div.className = 'card post'
+        div.innerHTML = `
+          <div class="post-header">
+            <div class="avatar">NG</div>
+            <div>
+              <div style="font-weight:700">${p.author}</div>
+              <div class="muted" style="font-size:12px">${new Date(p.time).toLocaleString()}</div>
+            </div>
+          </div>
+          <div style="margin-top:8px">${escapeHtml(p.text)}</div>
+          ${p.image?`<img src="${p.image}" class="post-image">`:''}
+          <div class="post-footer">
+            <div class="action" data-idx="${idx}" data-act="like">👍 <span class="likes">${p.likes}</span></div>
+            <div class="action" data-idx="${idx}" data-act="comment">💬 ${p.comments.length}</div>
+            <div class="action" data-idx="${idx}" data-act="share">↗️ Share</div>
+          </div>
+          <div class="comments" id="comments-${idx}">
+            ${p.comments.map(c=>`<div class="comment"><div class="small-avatar"></div><div class="bubble"><strong>${c.author}</strong> ${escapeHtml(c.text)}</div></div>`).join('')}
+            <div style="display:flex;gap:8px;margin-top:8px"><input placeholder="Write a comment" data-idx="${idx}" class="comment-input" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6e6e6"><button data-idx="${idx}" class="btn add-comment">Comment</button></div>
+          </div>
+        `
+        feedEl.appendChild(div)
+      })
+
+      document.querySelectorAll('.action').forEach(el=>el.addEventListener('click', actionHandler))
+      document.querySelectorAll('.add-comment').forEach(b=>b.addEventListener('click', addComment))
+    }
+
+    function actionHandler(e){
+      const idx = e.currentTarget.dataset.idx
+      const act = e.currentTarget.dataset.act
+      const p = posts[idx]
+      if(act==='like'){
+        p.likes += 1
+        renderFeed()
+      } else if(act==='comment'){
+        const box = document.querySelector(`.comment-input[data-idx="${idx}"]`)
+        box.focus()
+      } else if(act==='share'){
+        alert('Shared! (demo)')
+      }
+    }
+
+    function addComment(e){
+      const idx = e.currentTarget.dataset.idx
+      const input = document.querySelector(`.comment-input[data-idx="${idx}"]`)
+      const text = input.value.trim()
+      if(!text) return
+      posts[idx].comments.push({author:'You',text})
+      input.value = ''
+      renderFeed()
+    }
+
+    function escapeHtml(unsafe){
+      return unsafe
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('\\"','&quot;')
+        .replaceAll("'","&#039;")
+    }
+
+    createBtn.addEventListener('click', ()=>{
+      const text = postText.value.trim()
+      const image = postImageInput.dataset.image || ''
+      if(!text && !image){ alert('Write something or choose an image.'); return }
+      const newPost = {author:profileName.textContent,text, image, likes:0,comments:[],time:Date.now()}
+      posts.unshift(newPost)
+      postText.value = ''
+      postImageInput.value = ''
+      delete postImageInput.dataset.image
+      imagePreview.innerHTML = ''
+      renderFeed()
+    })
+
+    postImageInput.addEventListener('change', (e)=>{
+      const file = e.target.files[0]
+      if(!file) return
+      const reader = new FileReader()
+      reader.onload = function(ev){
+        postImageInput.dataset.image = ev.target.result
+        imagePreview.innerHTML = `<img src="${ev.target.result}" style="max-width:100%;border-radius:8px">`
+      }
+      reader.readAsDataURL(file)
+    })
+
+    posts.push({author:'FaceMini',text:'Welcome to your mini feed — this is a demo post. Try posting, liking and commenting!','image':'',likes:3,comments:[{author:'Priya',text:'Nice demo!'}],time:Date.now()-1000*60*60})
+    renderFeed()
+  </script>
+</body>
+</html>
